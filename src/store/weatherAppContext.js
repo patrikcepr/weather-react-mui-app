@@ -43,7 +43,6 @@ export const WeatherAppContextProvider = (props) => {
       const data = await response.json();
       setCurrentDay(data.current);
       setTimezone(data.timezone);
-      setCurrentDayMainWeather(currentDay.weather[0].main);
       // console.log(currentDay);
       // console.log(data);
     } catch (error) {
@@ -51,11 +50,14 @@ export const WeatherAppContextProvider = (props) => {
       setError(error.message);
     }
     setIsLoading(false);
-  }, [url, currentDay]);
+  }, [url]);
+
+  // const [state, dispatch] = useReducer(reducer, initialState, init)
 
   useEffect(() => {
     getForecastHandler();
-  }, [getForecastHandler]);
+    setCurrentDayMainWeather(currentDay.weather[0].main);
+  }, [getForecastHandler, currentDay.weather]);
 
   return (
     <WeatherAppContext.Provider

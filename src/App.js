@@ -1,5 +1,6 @@
 import React, { Fragment, useContext } from 'react';
-import MeteoItem from './components/Layout/MeteoItem';
+
+import MeteoFooter from './components/Layout/MeteoFooter';
 
 import {
   Button,
@@ -9,10 +10,6 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
-
-import ThermostatOutlinedIcon from '@mui/icons-material/ThermostatOutlined';
-import AirIcon from '@mui/icons-material/Air';
-import OpacityIcon from '@mui/icons-material/Opacity';
 
 import WeatherAppContext from './store/weatherAppContext';
 
@@ -38,50 +35,49 @@ function App() {
   return (
     <Fragment>
       <CssBaseline />
-      <Grid container maxWidth='md' sx={{ margin: '0 auto' }}>
+      <Grid
+        container
+        maxWidth='md'
+        sx={{
+          margin: '0 auto',
+          // height: '100vh',
+        }}
+      >
         <Grid item xs={12}>
           <Card>
             <CardContent>
-              <Typography variant='h3' component='div' textAlign='center'>
+              <Typography variant='h3' textAlign='center'>
                 {ctx.timezone}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <Card>
+          <Card sx={{ color: 'white', backgroundColor: 'primary.dark' }}>
             <CardContent>
-              <Typography variant='h3' component='div' textAlign='center'>
+              <Typography variant='h2' textAlign='center'>
                 {ctx.currentDayMainWeather}
                 {/* {content} */}
               </Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4}>
-          <MeteoItem value={ctx.currentDay.temp} unit='°C' name='Temp.'>
-            <ThermostatOutlinedIcon />
-          </MeteoItem>
+        <Grid
+          item
+          xs={12}
+          sx={{ display: 'flex', flexFlow: 'column', justifyContent: 'center' }}
+        >
+          <Button
+            onClick={ctx.getForecast}
+            variant='contained'
+            size='large'
+            color='success'
+          >
+            Fetch Forecast
+          </Button>
         </Grid>
-        <Grid item xs={4}>
-          <MeteoItem value={ctx.currentDay.wind_speed} unit='km/h' name='Wind'>
-            <AirIcon />
-          </MeteoItem>
-        </Grid>
-        <Grid item xs={4}>
-          <MeteoItem value={ctx.currentDay.humidity} unit='%' name='Humid.'>
-            <OpacityIcon />
-          </MeteoItem>
-        </Grid>
+        <MeteoFooter />
       </Grid>
-      <Button
-        onClick={ctx.getForecast}
-        variant='contained'
-        size='large'
-        color='success'
-      >
-        Fetch Forecast
-      </Button>
     </Fragment>
   );
 }
