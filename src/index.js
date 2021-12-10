@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { WeatherAppContextProvider } from './store/weatherAppContext';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <WeatherAppContextProvider>
+      <App />
+    </WeatherAppContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
