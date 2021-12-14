@@ -7,19 +7,19 @@ import {
   CssBaseline,
   Grid,
   Card,
+  CardHeader,
+  // CardMedia,
   CardContent,
+  Paper,
   Typography,
 } from '@mui/material';
 
 import WeatherAppContext from './store/weatherAppContext';
 
-// import brokenCloudsImg from './assets/svg/broken_clouds.svg';
-// import snowImg from './assets/svg/snow.svg';
-// import rainImg from './assets/svg/rain.svg';
-// import cloudsImg from './assets/svg/few_clouds.svg';
-
 import './App.css';
 // import { Image } from '@mui/icons-material';
+
+import letnaLetoImg from './assets/img/letna_leto.jpg';
 
 function App() {
   const ctx = useContext(WeatherAppContext);
@@ -38,20 +38,6 @@ function App() {
     content = <h2>{ctx.error}</h2>;
   }
 
-  // const assignWeatherIcon = (weather) => {
-  //   switch (weather) {
-  //     case 'Rain':
-  //       return rainImg;
-  //     case 'Snow':
-  //       return snowImg;
-  //     case 'Clouds':
-  //       return cloudsImg;
-  //     default:
-  //       console.log(weather);
-  //       return brokenCloudsImg;
-  //   }
-  // };
-
   let weather = ctx.currentDayMainWeather;
   console.log(weather);
   let iconSrc = ctx.assignWeatherIcon(weather);
@@ -61,70 +47,107 @@ function App() {
   return (
     <Fragment>
       <CssBaseline />
-      <Grid
-        container
-        maxWidth='md'
-        sx={{
-          margin: '0 auto',
-          height: '100vh',
-        }}
-      >
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography variant='h4' textAlign='center'>
-                {ctx.timezone}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Card sx={{ backgroundColor: 'yellow' }}>
-            <CardContent>
-              <Typography variant='h6' textAlign='center'>
-                {'Sunrise: ' + ctx.toDate(ctx.currentDay.sunrise)}
-                {' Sunset: ' + ctx.toDate(ctx.currentDay.sunset)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Card sx={{ color: 'white', backgroundColor: 'primary.dark' }}>
-            <CardContent
+      <Card>
+        <CardContent>
+          <Grid
+            container
+            maxWidth='sm'
+            sx={{
+              margin: '0 auto',
+              // height: '100vh',
+            }}
+          >
+            <Grid item xs={12}>
+              <CardHeader
+                title={ctx.timezone}
+                sx={{
+                  height: '10vh',
+                  backgroundColor: 'lightgrey',
+                  textAlign: 'center',
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
               sx={{
+                height: '5vh',
+                padding: '5',
+                backgroundColor: 'yellow',
                 display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyItems: 'center',
+                justifyContent: 'space-evenly',
               }}
             >
-              <Typography variant='h2' textAlign='center'>
-                {/* {ctx.currentDayMainWeather} */}
-                {content}
+              <Typography variant='h6' textAlign='center'>
+                {'Sunrise: ' + ctx.toDate(ctx.currentDay.sunrise)}
               </Typography>
-              <img src={iconSrc} alt={weather} height='100px' />
-              <Typography textAlign='center'>
-                {ctx.currentDay.weather[0].description}
+              <Typography variant='h6' textAlign='center'>
+                {' Sunset: ' + ctx.toDate(ctx.currentDay.sunset)}
               </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{ display: 'flex', flexFlow: 'column', justifyContent: 'center' }}
-        >
-          <Button
-            onClick={ctx.getForecast}
-            variant='contained'
-            size='large'
-            color='success'
-          >
-            Fetch Forecast
-          </Button>
-        </Grid>
-        <MeteoFooter />
-      </Grid>
+            </Grid>
+            <Grid item xs={12} sx={{ height: '60vh' }}>
+              <Card
+                sx={{
+                  color: 'white',
+                  // backgroundColor: 'rgba(0,0,0,0.5)',
+                  backgroundColor: 'primary.dark',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyItems: 'center',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                {/* <CardMedia
+                  component='img'
+                  height='200'
+                  image={letnaLetoImg}
+                  alt='Letná v létě'
+                /> */}
+                {/* <Paper
+                  elevation={3}
+                  sx={{
+                    backgroundImage: { letnaLetoImg },
+                    backgroundColor: 'rgba(0,0,0,0.5',
+                  }}
+                > */}
+                <CardContent>
+                  <Typography variant='h2' textAlign='center'>
+                    {/* {ctx.currentDayMainWeather} */}
+                    {content}
+                  </Typography>
+                  <img src={iconSrc} alt={weather} height='200px' />
+                  <Typography textAlign='center'>
+                    {ctx.currentDay.weather[0].description}
+                  </Typography>
+                </CardContent>
+                {/* </Paper> */}
+              </Card>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: 'flex',
+                flexFlow: 'column',
+                justifyContent: 'center',
+                height: '5vh',
+              }}
+            >
+              <Button
+                onClick={ctx.getForecast}
+                variant='contained'
+                size='large'
+                color='primary'
+              >
+                Fetch Forecast
+              </Button>
+            </Grid>
+            <MeteoFooter sx={{ height: '15vh' }} />
+          </Grid>
+        </CardContent>
+      </Card>
     </Fragment>
   );
 }
