@@ -10,7 +10,6 @@ import {
   CardHeader,
   // CardMedia,
   CardContent,
-  Paper,
   Typography,
 } from '@mui/material';
 
@@ -89,29 +88,19 @@ function App() {
               <Card
                 sx={{
                   color: 'white',
-                  // backgroundColor: 'rgba(0,0,0,0.5)',
-                  backgroundColor: 'primary.dark',
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyItems: 'center',
                   justifyContent: 'space-evenly',
+                  background: `linear-gradient(35deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url(${letnaLetoImg})`,
+                  backgroundColor: 'primary.dark',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
                 }}
               >
-                {/* <CardMedia
-                  component='img'
-                  height='200'
-                  image={letnaLetoImg}
-                  alt='Letná v létě'
-                /> */}
-                {/* <Paper
-                  elevation={3}
-                  sx={{
-                    backgroundImage: { letnaLetoImg },
-                    backgroundColor: 'rgba(0,0,0,0.5',
-                  }}
-                > */}
                 <CardContent>
                   <Typography variant='h2' textAlign='center'>
                     {/* {ctx.currentDayMainWeather} */}
@@ -122,7 +111,6 @@ function App() {
                     {ctx.currentDay.weather[0].description}
                   </Typography>
                 </CardContent>
-                {/* </Paper> */}
               </Card>
             </Grid>
             <Grid
