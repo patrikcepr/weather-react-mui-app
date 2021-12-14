@@ -15,12 +15,16 @@ const MeteoFooter = () => {
   return (
     <Grid container item>
       <Grid item xs={4}>
-        <MeteoItem value={ctx.currentDay.temp} unit='°C' name='Temperature'>
+        <MeteoItem
+          value={Math.round(ctx.currentDay.temp)}
+          unit='°C'
+          name='Temperature'
+        >
           <ThermostatOutlinedIcon />
         </MeteoItem>
       </Grid>
       <Grid item xs={4}>
-        <MeteoItem value={ctx.currentDay.wind_speed} unit='km/h' name='Wind'>
+        <MeteoItem value={ctx.currentDay.wind_speed} unit='m/s' name='Wind'>
           <AirIcon />
         </MeteoItem>
       </Grid>
