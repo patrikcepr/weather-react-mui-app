@@ -25,7 +25,7 @@ const Temperature = (props) => {
           item
           sx={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: { xs: 18, sm: 22 },
             fontWeight: 500,
             display: { xs: 'inline flow', sm: 'block flow' },
           }}

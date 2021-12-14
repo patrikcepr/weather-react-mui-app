@@ -8,7 +8,6 @@ import {
   Grid,
   Card,
   CardHeader,
-  // CardMedia,
   CardContent,
   Typography,
 } from '@mui/material';
@@ -16,32 +15,30 @@ import {
 import WeatherAppContext from './store/weatherAppContext';
 
 import './App.css';
-// import { Image } from '@mui/icons-material';
 
-import letnaLetoImg from './assets/img/letna_leto.jpg';
+// import letnaEarlySummer from './assets/img/letna_EarlySummer.jpg';
+import letnaWinterNoSnow from './assets/img/letnaWinterNoSnow.jpg';
 
 function App() {
   const ctx = useContext(WeatherAppContext);
 
-  let content = <h2>Data is loading....</h2>;
+  let content = <span>Data is loading....</span>;
 
   if (!ctx.isLoading && ctx.currentDay.weather.length > 0) {
     content = ctx.currentDayMainWeather;
   }
 
   if (!ctx.isLoading && ctx.currentDay.length === 0 && !ctx.error) {
-    content = <h2>No data received</h2>;
+    content = <span>No data received</span>;
   }
 
   if (ctx.error) {
-    content = <h2>{ctx.error}</h2>;
+    content = <span>{ctx.error}</span>;
   }
 
   let weather = ctx.currentDayMainWeather;
   console.log(weather);
   let iconSrc = ctx.assignWeatherIcon(weather);
-
-  console.log(iconSrc);
 
   return (
     <Fragment>
@@ -50,7 +47,7 @@ function App() {
         <CardContent>
           <Grid
             container
-            maxWidth='sm'
+            maxWidth='md'
             sx={{
               margin: '0 auto',
               // height: '100vh',
@@ -61,7 +58,7 @@ function App() {
                 title={ctx.timezone}
                 sx={{
                   height: '10vh',
-                  backgroundColor: 'lightgrey',
+                  backgroundColor: 'primary.light',
                   textAlign: 'center',
                 }}
               />
@@ -71,20 +68,40 @@ function App() {
               xs={12}
               sx={{
                 height: '5vh',
-                padding: '5',
+                color: 'white',
+                backgroundColor: 'primary.dark',
+              }}
+            >
+              <Typography
+                variant='subtitle1'
+                textAlign='center'
+                padding='10'
+                sx={{
+                  verticalAlign: 'baseline',
+                }}
+              >
+                {'Local Time: ' + ctx.toDateTime(ctx.currentDay.dt)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              // padding={0.3}
+              sx={{
+                height: '5vh',
                 backgroundColor: 'yellow',
                 display: 'flex',
                 justifyContent: 'space-evenly',
               }}
             >
-              <Typography variant='h6' textAlign='center'>
-                {'Sunrise: ' + ctx.toDate(ctx.currentDay.sunrise)}
+              <Typography variant='subtitle1' textAlign='center'>
+                {'Sunrise: ' + ctx.toTime(ctx.currentDay.sunrise)}
               </Typography>
-              <Typography variant='h6' textAlign='center'>
-                {' Sunset: ' + ctx.toDate(ctx.currentDay.sunset)}
+              <Typography variant='subtitle1' textAlign='center'>
+                {' Sunset: ' + ctx.toTime(ctx.currentDay.sunset)}
               </Typography>
             </Grid>
-            <Grid item xs={12} sx={{ height: '60vh' }}>
+            <Grid item xs={12} sx={{ height: '55vh' }}>
               <Card
                 sx={{
                   color: 'white',
@@ -94,7 +111,7 @@ function App() {
                   alignItems: 'center',
                   justifyItems: 'center',
                   justifyContent: 'space-evenly',
-                  background: `linear-gradient(35deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url(${letnaLetoImg})`,
+                  background: `linear-gradient(35deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url(${letnaWinterNoSnow})`,
                   backgroundColor: 'primary.dark',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
@@ -107,7 +124,7 @@ function App() {
                     {content}
                   </Typography>
                   <img src={iconSrc} alt={weather} height='200px' />
-                  <Typography textAlign='center'>
+                  <Typography variant='h5' textAlign='center'>
                     {ctx.currentDay.weather[0].description}
                   </Typography>
                 </CardContent>
