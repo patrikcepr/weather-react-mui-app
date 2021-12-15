@@ -1,6 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 
 import MeteoFooter from './components/Layout/MeteoFooter';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
   Button,
@@ -36,9 +37,13 @@ function App() {
     content = <span>{ctx.error}</span>;
   }
 
+  // get weather type to choose the icon
   let weather = ctx.currentDayMainWeather;
   console.log(weather);
-  let iconSrc = ctx.assignWeatherIcon(weather);
+
+  console.log(ctx.night);
+  // set the right icon
+  let iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
 
   return (
     <Fragment>
@@ -62,22 +67,25 @@ function App() {
                   textAlign: 'center',
                 }}
               />
+              <CloudDownloadIcon />
             </Grid>
             <Grid
               item
               xs={12}
               sx={{
                 height: '5vh',
-                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 backgroundColor: 'primary.dark',
               }}
             >
               <Typography
                 variant='subtitle1'
                 textAlign='center'
-                padding='10'
+                // paddingTop={0.8}
                 sx={{
-                  verticalAlign: 'baseline',
+                  color: 'white',
                 }}
               >
                 {'Local Time: ' + ctx.toDateTime(ctx.currentDay.dt)}
@@ -91,6 +99,7 @@ function App() {
                 height: '5vh',
                 backgroundColor: 'yellow',
                 display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'space-evenly',
               }}
             >
@@ -104,7 +113,6 @@ function App() {
             <Grid item xs={12} sx={{ height: '55vh' }}>
               <Card
                 sx={{
-                  color: 'white',
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
@@ -118,13 +126,22 @@ function App() {
                   backgroundSize: 'cover',
                 }}
               >
-                <CardContent>
-                  <Typography variant='h2' textAlign='center'>
-                    {/* {ctx.currentDayMainWeather} */}
+                <CardContent
+                  sx={{
+                    height: '100%',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyItems: 'center',
+                    justifyContent: 'space-evenly',
+                  }}
+                >
+                  <Typography variant='h3' textAlign='center' paddingBottom={1}>
                     {content}
                   </Typography>
-                  <img src={iconSrc} alt={weather} height='200px' />
-                  <Typography variant='h5' textAlign='center'>
+                  <img src={iconSrc} alt={weather} height='180px' />
+                  <Typography variant='h5' textAlign='center' paddingTop={1}>
                     {ctx.currentDay.weather[0].description}
                   </Typography>
                 </CardContent>
@@ -134,10 +151,10 @@ function App() {
               item
               xs={12}
               sx={{
+                height: '5vh',
                 display: 'flex',
                 flexFlow: 'column',
                 justifyContent: 'center',
-                height: '5vh',
               }}
             >
               <Button
