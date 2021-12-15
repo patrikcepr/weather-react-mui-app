@@ -1,10 +1,12 @@
 import React, { Fragment, useContext } from 'react';
 
 import MeteoFooter from './components/Layout/MeteoFooter';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import MeteoMain from './components/Layout/MeteoMain';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 import {
-  Button,
+  BottomNavigation,
+  BottomNavigationAction,
   CssBaseline,
   Grid,
   Card,
@@ -16,9 +18,6 @@ import {
 import WeatherAppContext from './store/weatherAppContext';
 
 import './App.css';
-
-// import letnaEarlySummer from './assets/img/letna_EarlySummer.jpg';
-import letnaWinterNoSnow from './assets/img/letnaWinterNoSnow.jpg';
 
 function App() {
   const ctx = useContext(WeatherAppContext);
@@ -39,8 +38,10 @@ function App() {
 
   // get weather type to choose the icon
   let weather = ctx.currentDayMainWeather;
+  // comment out for real life
   console.log(weather);
 
+  // comment out for real life
   console.log(ctx.night);
   // set the right icon
   let iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
@@ -48,26 +49,24 @@ function App() {
   return (
     <Fragment>
       <CssBaseline />
-      <Card>
+      <Card
+        sx={{
+          margin: '0 auto',
+          height: '100vh',
+        }}
+      >
         <CardContent>
-          <Grid
-            container
-            maxWidth='md'
-            sx={{
-              margin: '0 auto',
-              // height: '100vh',
-            }}
-          >
+          <Grid container maxWidth='sm'>
             <Grid item xs={12}>
               <CardHeader
                 title={ctx.timezone}
                 sx={{
                   height: '10vh',
-                  backgroundColor: 'primary.light',
+                  color: 'white',
+                  backgroundColor: 'primary.dark',
                   textAlign: 'center',
                 }}
               />
-              <CloudDownloadIcon />
             </Grid>
             <Grid
               item
@@ -77,13 +76,14 @@ function App() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'primary.dark',
+                background: '#2980B9' /* fallback for old browsers */,
+                backgroundImage:
+                  'linear-gradient(to right, #2193b0, #6dd5ed)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
               }}
             >
               <Typography
                 variant='subtitle1'
                 textAlign='center'
-                // paddingTop={0.8}
                 sx={{
                   color: 'white',
                 }}
@@ -94,10 +94,12 @@ function App() {
             <Grid
               item
               xs={12}
-              // padding={0.3}
               sx={{
                 height: '5vh',
-                backgroundColor: 'yellow',
+                background: '#FF512F' /* fallback for old browsers */,
+                // background: '-webkit-linear-gradient(to right, #F09819, #FF512F)',  /* Chrome 10-25, Safari 5.1-6 */
+                backgroundImage:
+                  'linear-gradient(to right, #F09819, #FF512F)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
@@ -110,63 +112,30 @@ function App() {
                 {' Sunset: ' + ctx.toTime(ctx.currentDay.sunset)}
               </Typography>
             </Grid>
-            <Grid item xs={12} sx={{ height: '55vh' }}>
-              <Card
+            <Grid item xs={12} sx={{ height: '50vh' }}>
+              <MeteoMain content={content} icon={iconSrc} weather={weather} />
+            </Grid>
+            <Grid item xs={12}>
+              <MeteoFooter sx={{ height: '10vh' }} />
+            </Grid>
+            <Grid item xs={12} sx={{ height: '10vh' }}>
+              <BottomNavigation
+                xs={12}
+                showLabels
                 sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyItems: 'center',
-                  justifyContent: 'space-evenly',
-                  background: `linear-gradient(35deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url(${letnaWinterNoSnow})`,
-                  backgroundColor: 'primary.dark',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: 'cover',
+                  backgroundColor: '#222',
+                  backgroundImage:
+                    'linear-gradient(to right, #0f2027, #203a43, #2c5364)',
                 }}
-              >
-                <CardContent
-                  sx={{
-                    height: '100%',
-                    color: 'white',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyItems: 'center',
-                    justifyContent: 'space-evenly',
-                  }}
-                >
-                  <Typography variant='h3' textAlign='center' paddingBottom={1}>
-                    {content}
-                  </Typography>
-                  <img src={iconSrc} alt={weather} height='180px' />
-                  <Typography variant='h5' textAlign='center' paddingTop={1}>
-                    {ctx.currentDay.weather[0].description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{
-                height: '5vh',
-                display: 'flex',
-                flexFlow: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
                 onClick={ctx.getForecast}
-                variant='contained'
-                size='large'
-                color='primary'
               >
-                Fetch Forecast
-              </Button>
+                <BottomNavigationAction
+                  label='Reload forecast'
+                  sx={{ color: '#fff' }}
+                  icon={<CloudDownloadOutlinedIcon />}
+                />
+              </BottomNavigation>
             </Grid>
-            <MeteoFooter sx={{ height: '15vh' }} />
           </Grid>
         </CardContent>
       </Card>

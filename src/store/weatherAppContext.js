@@ -1,8 +1,10 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
+// uncomment for real life
 // import { apiKey } from '../apiConfig';
 
-import data_obj from '../assets/data-obj.json';
+// import data_obj from '../assets/data-obj.json';
+import data_obj_today from '../assets/data-obj-today.json';
 
 import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
 import clearDayImg from '../assets/svg/clear_sky.svg';
@@ -71,15 +73,15 @@ export const WeatherAppContextProvider = (props) => {
     }
   };
 
+  // uncomment for real life
   // const place = {
   //   name: 'Letná',
   //   lat: 50.096034,
   //   lon: 14.425966,
   // };
 
+  // uncomment for real life
   // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
-
-  // const url = '';
 
   const getForecastHandler = useCallback(
     async () => {
@@ -87,27 +89,32 @@ export const WeatherAppContextProvider = (props) => {
       setError(null);
 
       try {
+        // uncomment for real life
         // const response = await fetch(url);
+        // uncomment for real life
         // const data = await response.json();
-        const data = data_obj;
+        // comment out for real life
+        const data = data_obj_today;
+        // comment out for real life
         console.log('FETCH');
-        await setData(data);
+        await setData(() => data);
         //set current day object
-        setCurrentDay(data.current);
+        setCurrentDay(() => data.current);
         // set timezone (location)
-        setTimezone(data.timezone);
-        setCurrentDayMainWeather(data.current.weather[0].main);
+        setTimezone(() => data.timezone);
+        setCurrentDayMainWeather(() => data.current.weather[0].main);
         // set day or night
         data.current.dt > data.current.sunset
           ? setNight(true)
           : setNight(false);
       } catch (error) {
         console.log('error', error);
-        setError(error.message);
+        setError(() => error.message);
       }
       setIsLoading(false);
     },
     [
+      // uncomment for real life
       // url
     ]
   );
