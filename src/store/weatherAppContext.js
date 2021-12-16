@@ -3,6 +3,7 @@ import React, { createContext, useState, useCallback, useEffect } from 'react';
 // uncomment for real life
 // import { apiKey } from '../apiConfig';
 
+// comment out for real life
 // import data_obj from '../assets/data-obj.json';
 import data_obj_today from '../assets/data-obj-today.json';
 
@@ -29,6 +30,7 @@ const WeatherAppContext = createContext({
   data: {},
   setData: () => {},
   assignWeatherIcon: () => {},
+  now: Number,
   night: Boolean,
   setNight: () => {},
 });
@@ -45,7 +47,8 @@ export const WeatherAppContextProvider = (props) => {
   const [timezone, setTimezone] = useState('');
   const [currentDayMainWeather, setCurrentDayMainWeather] = useState('');
   const [data, setData] = useState({});
-  const [night, setNight] = useState(true);
+  const [now, setNow] = useState(null);
+  const [night, setNight] = useState(null);
 
   //date from UTC time stamp
   const toTime = (val) => new Date(val * 1000).toLocaleTimeString('cs-CZ');
@@ -96,17 +99,21 @@ export const WeatherAppContextProvider = (props) => {
         // comment out for real life
         const data = data_obj_today;
         // comment out for real life
-        console.log('FETCH');
+        console.log('FETCHing');
         await setData(() => data);
         //set current day object
         setCurrentDay(() => data.current);
         // set timezone (location)
         setTimezone(() => data.timezone);
         setCurrentDayMainWeather(() => data.current.weather[0].main);
+        // set time
+        setNow(data.current.dt);
+        // wtf
+        console.log('now utc ' + data.current.dt);
+        console.log('sunset utc ' + data.current.sunset);
+        console.log('sunrise tomorrow ' + data.daily[0].sunrise);
         // set day or night
-        data.current.dt > data.current.sunset
-          ? setNight(true)
-          : setNight(false);
+        // setNight(nightNight);
       } catch (error) {
         console.log('error', error);
         setError(() => error.message);
@@ -115,13 +122,34 @@ export const WeatherAppContextProvider = (props) => {
     },
     [
       // uncomment for real life
-      // url
+      // url,
     ]
   );
+
+  function nightNight() {
+    if (
+      currentDay.dt < currentDay.sunrise && // midnight to sunrise -> night
+      currentDay.dt > currentDay.sunset && // dark after today sunset -> night
+      currentDay.dt < data.daily[0].sunrise // before tomorrow sunrise -> night
+    ) {
+      console.log("it's night");
+      return true;
+      // setNight(true);
+    } else {
+      console.log("it's day");
+      return false;
+      // setNight(false);
+    }
+  }
+
+  console.log(nightNight());
+
+  console.log('night is: ' + night);
 
   useEffect(() => {
     console.log('useEffect');
     getForecastHandler();
+    console.log(night);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -139,6 +167,7 @@ export const WeatherAppContextProvider = (props) => {
         data: data,
         setData: setData,
         assignWeatherIcon: assignWeatherIcon,
+        now: now,
         night: night,
         setNight: setNight,
       }}

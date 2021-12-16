@@ -4,6 +4,9 @@ import MeteoFooter from './components/Layout/MeteoFooter';
 import MeteoMain from './components/Layout/MeteoMain';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
+import { logEvent } from '@firebase/analytics';
+import { analytics } from './firebaseConfig';
+
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -20,6 +23,9 @@ import WeatherAppContext from './store/weatherAppContext';
 import './App.css';
 
 function App() {
+  // google analytics
+  logEvent(analytics);
+
   const ctx = useContext(WeatherAppContext);
 
   let content = <span>Data is loading....</span>;
@@ -39,10 +45,10 @@ function App() {
   // get weather type to choose the icon
   let weather = ctx.currentDayMainWeather;
   // comment out for real life
-  console.log(weather);
+  // console.log(weather);
 
   // comment out for real life
-  console.log(ctx.night);
+  // console.log(ctx.night);
   // set the right icon
   let iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
 
@@ -56,10 +62,14 @@ function App() {
         }}
       >
         <CardContent>
-          <Grid container maxWidth='sm'>
+          <Grid
+            container
+            //  maxWidth='sm'
+          >
             <Grid item xs={12}>
               <CardHeader
-                title={ctx.timezone}
+                // title={ctx.timezone}
+                title='Weather on Letná'
                 sx={{
                   height: '10vh',
                   color: 'white',
