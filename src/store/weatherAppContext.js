@@ -1,11 +1,11 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
 // uncomment for real life
-// import { apiKey } from '../apiConfig';
+import { apiKey } from '../apiConfig';
 
 // comment out for real life
 // import data_obj from '../assets/data-obj.json';
-import data_obj_today from '../assets/data-obj-today.json';
+// import data_obj_today from '../assets/data-obj-today.json';
 
 import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
 import clearDayImg from '../assets/svg/clear_sky.svg';
@@ -77,14 +77,14 @@ export const WeatherAppContextProvider = (props) => {
   };
 
   // uncomment for real life
-  // const place = {
-  //   name: 'Letná',
-  //   lat: 50.096034,
-  //   lon: 14.425966,
-  // };
+  const place = {
+    name: 'Letná',
+    lat: 50.096034,
+    lon: 14.425966,
+  };
 
   // uncomment for real life
-  // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
 
   const getForecastHandler = useCallback(
     async () => {
@@ -93,11 +93,11 @@ export const WeatherAppContextProvider = (props) => {
 
       try {
         // uncomment for real life
-        // const response = await fetch(url);
+        const response = await fetch(url);
         // uncomment for real life
-        // const data = await response.json();
+        const data = await response.json();
         // comment out for real life
-        const data = data_obj_today;
+        // const data = data_obj_today;
         // comment out for real life
         console.log('FETCHing');
         await setData(() => data);
@@ -109,20 +109,21 @@ export const WeatherAppContextProvider = (props) => {
         // set time
         setNow(data.current.dt);
         // wtf
-        console.log('now utc ' + data.current.dt);
-        console.log('sunset utc ' + data.current.sunset);
-        console.log('sunrise tomorrow ' + data.daily[0].sunrise);
+        // console.log('now utc ' + data.current.dt);
+        // console.log('sunset utc ' + data.current.sunset);
+        // console.log('sunrise tomorrow ' + data.daily[0].sunrise);
         // set day or night
-        // setNight(nightNight);
+        setNight(nightNight());
       } catch (error) {
         console.log('error', error);
         setError(() => error.message);
       }
       setIsLoading(false);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       // uncomment for real life
-      // url,
+      url,
     ]
   );
 
@@ -142,14 +143,12 @@ export const WeatherAppContextProvider = (props) => {
     }
   }
 
-  console.log(nightNight());
-
   console.log('night is: ' + night);
 
   useEffect(() => {
     console.log('useEffect');
     getForecastHandler();
-    console.log(night);
+    console.log('useEffNight is ' + night);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
