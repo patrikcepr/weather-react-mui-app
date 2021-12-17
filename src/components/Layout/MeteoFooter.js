@@ -1,36 +1,51 @@
 import React, { useContext } from 'react';
 import MeteoItem from '../Layout/MeteoItem';
 
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
-import ThermostatOutlinedIcon from '@mui/icons-material/ThermostatOutlined';
-import AirIcon from '@mui/icons-material/Air';
-import OpacityIcon from '@mui/icons-material/Opacity';
+import windSpeedIco from '../../assets/svg/wind_speed.svg';
+import humidityIco from '../../assets/svg/humidity.svg';
 
 import WeatherAppContext from '../../store/weatherAppContext';
 
 const MeteoFooter = () => {
   const ctx = useContext(WeatherAppContext);
 
+  // choose temperature icon
+  const temperature = Math.round(ctx.currentDay.temp);
+  const tempIco = ctx.tempIcon(temperature);
+
+  // wind speed
+  const windSpeed = ctx.currentDay.wind_speed;
+
+  // humidity
+  const humidity = ctx.currentDay.humidity;
+
   return (
     <Grid container item>
       <Grid item xs={4}>
-        <MeteoItem
-          value={Math.round(ctx.currentDay.temp)}
-          unit='°C'
-          name='Temperature'
-        >
-          <ThermostatOutlinedIcon />
+        <MeteoItem value={temperature} unit='°C' name='Temperature'>
+          <Box sx={{ height: '30px' }}>
+            <img src={tempIco} alt='Temperature' style={{ height: '100%' }} />
+          </Box>
         </MeteoItem>
       </Grid>
       <Grid item xs={4}>
-        <MeteoItem value={ctx.currentDay.wind_speed} unit='m/s' name='Wind'>
-          <AirIcon />
+        <MeteoItem value={windSpeed} unit='m/s' name='Wind'>
+          <Box sx={{ height: '30px' }}>
+            <img
+              src={windSpeedIco}
+              alt='Wind Speed'
+              style={{ height: '100%' }}
+            />
+          </Box>
         </MeteoItem>
       </Grid>
       <Grid item xs={4}>
-        <MeteoItem value={ctx.currentDay.humidity} unit='%' name='Humidity'>
-          <OpacityIcon />
+        <MeteoItem value={humidity} unit='%' name='Humidity'>
+          <Box sx={{ height: '30px' }}>
+            <img src={humidityIco} alt='Humidity' style={{ height: '100%' }} />
+          </Box>
         </MeteoItem>
       </Grid>
     </Grid>

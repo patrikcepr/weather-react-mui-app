@@ -42,16 +42,6 @@ function App() {
     content = <span>{ctx.error}</span>;
   }
 
-  // get weather type to choose the icon
-  let weather = ctx.currentDayMainWeather;
-  // comment out for real life
-  // console.log(weather);
-
-  // comment out for real life
-  // console.log(ctx.night);
-  // set the right icon
-  let iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
-
   return (
     <Fragment>
       <CssBaseline />
@@ -87,8 +77,7 @@ function App() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 background: '#2980B9' /* fallback for old browsers */,
-                backgroundImage:
-                  'linear-gradient(to right, #2193b0, #6dd5ed)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+                backgroundImage: 'linear-gradient(to right, #2193b0, #6dd5ed)',
               }}
             >
               <Typography
@@ -107,9 +96,7 @@ function App() {
               sx={{
                 height: '5vh',
                 background: '#FF512F' /* fallback for old browsers */,
-                // background: '-webkit-linear-gradient(to right, #F09819, #FF512F)',  /* Chrome 10-25, Safari 5.1-6 */
-                backgroundImage:
-                  'linear-gradient(to right, #F09819, #FF512F)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+                backgroundImage: 'linear-gradient(to right, #F09819, #FF512F)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
@@ -123,7 +110,7 @@ function App() {
               </Typography>
             </Grid>
             <Grid item xs={12} sx={{ height: '50vh' }}>
-              <MeteoMain content={content} icon={iconSrc} weather={weather} />
+              <MeteoMain content={content} />
             </Grid>
             <Grid item xs={12}>
               <MeteoFooter sx={{ height: '10vh' }} />

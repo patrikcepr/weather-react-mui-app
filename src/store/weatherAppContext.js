@@ -1,12 +1,13 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
 // uncomment for real life
-import { apiKey } from '../apiConfig';
+// import { apiKey } from '../apiConfig';
 
 // comment out for real life
 // import data_obj from '../assets/data-obj.json';
-// import data_obj_today from '../assets/data-obj-today.json';
+import data_obj_today from '../assets/data-obj-today.json';
 
+// weather icons
 import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
 import clearDayImg from '../assets/svg/clear_sky.svg';
 import clearNightImg from '../assets/svg/clear_skyN.svg';
@@ -17,6 +18,13 @@ import fogImg from '../assets/svg/fog.svg';
 import rainImg from '../assets/svg/rain.svg';
 import snowImg from '../assets/svg/snow.svg';
 import thunderstormImg from '../assets/svg/thunderstorm.svg';
+
+// temperature icons
+import tempBelowIco from '../assets/svg/temp_minus.svg';
+import tempZeroIco from '../assets/svg/temp_zero.svg';
+import tempLowIco from '../assets/svg/temp_low.svg';
+import tempMidIco from '../assets/svg/temp_mid.svg';
+import tempHotIco from '../assets/svg/temp_hot.svg';
 
 const WeatherAppContext = createContext({
   currentDay: {},
@@ -33,6 +41,7 @@ const WeatherAppContext = createContext({
   now: Number,
   night: Boolean,
   setNight: () => {},
+  tempIcon: () => {},
 });
 
 export const WeatherAppContextProvider = (props) => {
@@ -76,15 +85,33 @@ export const WeatherAppContextProvider = (props) => {
     }
   };
 
-  // uncomment for real life
-  const place = {
-    name: 'Letná',
-    lat: 50.096034,
-    lon: 14.425966,
+  const tempIcon = (temp) => {
+    if (temp < 0) {
+      return tempBelowIco;
+    }
+    if (temp === 0) {
+      return tempZeroIco;
+    }
+    if (temp > 0 && temp < 10) {
+      return tempLowIco;
+    }
+    if (temp >= 10 && temp < 25) {
+      return tempMidIco;
+    }
+    if (temp >= 25) {
+      return tempHotIco;
+    }
   };
 
   // uncomment for real life
-  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+  // const place = {
+  //   name: 'Letná',
+  //   lat: 50.096034,
+  //   lon: 14.425966,
+  // };
+
+  // uncomment for real life
+  // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
 
   const getForecastHandler = useCallback(
     async () => {
@@ -93,11 +120,11 @@ export const WeatherAppContextProvider = (props) => {
 
       try {
         // uncomment for real life
-        const response = await fetch(url);
+        // const response = await fetch(url);
         // uncomment for real life
-        const data = await response.json();
+        // const data = await response.json();
         // comment out for real life
-        // const data = data_obj_today;
+        const data = data_obj_today;
         // comment out for real life
         console.log('FETCHing');
         await setData(() => data);
@@ -108,12 +135,20 @@ export const WeatherAppContextProvider = (props) => {
         setCurrentDayMainWeather(() => data.current.weather[0].main);
         // set time
         setNow(data.current.dt);
-        // wtf
-        // console.log('now utc ' + data.current.dt);
-        // console.log('sunset utc ' + data.current.sunset);
-        // console.log('sunrise tomorrow ' + data.daily[0].sunrise);
         // set day or night
-        setNight(nightNight());
+        setNight(() => {
+          if (
+            data.current.dt < data.current.sunrise || // midnight to sunrise -> night
+            data.current.dt > data.current.sunset || // dark after today sunset -> night
+            data.current.dt < data.daily[0].sunrise // before tomorrow sunrise -> night
+          ) {
+            console.log("it's night");
+            return true;
+          } else {
+            console.log("it's day");
+            return false;
+          }
+        });
       } catch (error) {
         console.log('error', error);
         setError(() => error.message);
@@ -123,32 +158,13 @@ export const WeatherAppContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       // uncomment for real life
-      url,
+      // url,
     ]
   );
 
-  function nightNight() {
-    if (
-      currentDay.dt < currentDay.sunrise && // midnight to sunrise -> night
-      currentDay.dt > currentDay.sunset && // dark after today sunset -> night
-      currentDay.dt < data.daily[0].sunrise // before tomorrow sunrise -> night
-    ) {
-      console.log("it's night");
-      return true;
-      // setNight(true);
-    } else {
-      console.log("it's day");
-      return false;
-      // setNight(false);
-    }
-  }
-
-  console.log('night is: ' + night);
-
   useEffect(() => {
-    console.log('useEffect');
     getForecastHandler();
-    console.log('useEffNight is ' + night);
+    // console.log('useEffNight is ' + night);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -169,6 +185,7 @@ export const WeatherAppContextProvider = (props) => {
         now: now,
         night: night,
         setNight: setNight,
+        tempIcon: tempIcon,
       }}
     >
       {props.children}

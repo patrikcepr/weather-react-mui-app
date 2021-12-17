@@ -4,16 +4,18 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 
 const Temperature = (props) => {
   return (
-    <Card variant='outlined' sx={{ backgroundColor: 'primary.dark' }}>
+    <Card
+      variant='outlined'
+      sx={{ backgroundColor: 'primary.dark', padding: '0' }}
+    >
       <CardContent>
         <Grid
           container
           direction='row'
-          gap={0.3}
-          alignItems='bottom'
+          gap={0.5}
+          alignItems='flex-end'
           justifyContent='center'
           color='white'
-          // sx={{ padding: '0px' }}
         >
           <Grid item>{props.children}</Grid>
           <Grid item sx={{ display: { xs: 'none', sm: 'inline flex' } }}>
