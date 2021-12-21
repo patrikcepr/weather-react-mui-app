@@ -1,11 +1,10 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
 // uncomment for real life
-// import { apiKey } from '../apiConfig';
+import { apiKey } from '../apiConfig';
 
 // comment out for real life
-// import data_obj from '../assets/data-obj.json';
-import data_obj_today from '../assets/data-obj-today.json';
+// import data_obj_today from '../assets/data-obj-tonight.json';
 
 // weather icons
 import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
@@ -40,7 +39,6 @@ const WeatherAppContext = createContext({
   assignWeatherIcon: () => {},
   now: Number,
   night: Boolean,
-  setNight: () => {},
   tempIcon: () => {},
 });
 
@@ -63,7 +61,7 @@ export const WeatherAppContextProvider = (props) => {
   const toTime = (val) => new Date(val * 1000).toLocaleTimeString('cs-CZ');
   const toDateTime = (val) => new Date(val * 1000).toLocaleString('cs-CZ');
 
-  // assign the proper icon
+  // assign the proper weather icon
   const assignWeatherIcon = (weather, night) => {
     switch (weather) {
       case 'Clear':
@@ -85,6 +83,7 @@ export const WeatherAppContextProvider = (props) => {
     }
   };
 
+  // choose temperature icon
   const tempIcon = (temp) => {
     if (temp < 0) {
       return tempBelowIco;
@@ -104,14 +103,27 @@ export const WeatherAppContextProvider = (props) => {
   };
 
   // uncomment for real life
-  // const place = {
-  //   name: 'Letná',
-  //   lat: 50.096034,
-  //   lon: 14.425966,
-  // };
+  const place = {
+    name: 'Letná',
+    lat: 50.096034,
+    lon: 14.425966,
+  };
 
   // uncomment for real life
-  // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+
+  const isNight = (now, sunrise, sunset) => {
+    if (
+      now < sunrise || // midnight to sunrise -> night
+      now > sunset // dark after today sunset -> night
+    ) {
+      console.log("it's night");
+      return true;
+    } else {
+      console.log("it's day");
+      return false;
+    }
+  };
 
   const getForecastHandler = useCallback(
     async () => {
@@ -120,13 +132,13 @@ export const WeatherAppContextProvider = (props) => {
 
       try {
         // uncomment for real life
-        // const response = await fetch(url);
+        const response = await fetch(url);
         // uncomment for real life
-        // const data = await response.json();
+        const data = await response.json();
         // comment out for real life
-        const data = data_obj_today;
+        // const data = data_obj_today;
         // comment out for real life
-        console.log('FETCHing');
+        // console.log('FETCHing');
         await setData(() => data);
         //set current day object
         setCurrentDay(() => data.current);
@@ -136,19 +148,9 @@ export const WeatherAppContextProvider = (props) => {
         // set time
         setNow(data.current.dt);
         // set day or night
-        setNight(() => {
-          if (
-            data.current.dt < data.current.sunrise || // midnight to sunrise -> night
-            data.current.dt > data.current.sunset || // dark after today sunset -> night
-            data.current.dt < data.daily[0].sunrise // before tomorrow sunrise -> night
-          ) {
-            console.log("it's night");
-            return true;
-          } else {
-            console.log("it's day");
-            return false;
-          }
-        });
+        setNight(
+          isNight(data.current.dt, data.current.sunrise, data.current.sunset)
+        );
       } catch (error) {
         console.log('error', error);
         setError(() => error.message);
@@ -158,13 +160,12 @@ export const WeatherAppContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       // uncomment for real life
-      // url,
+      url,
     ]
   );
 
   useEffect(() => {
     getForecastHandler();
-    // console.log('useEffNight is ' + night);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -184,7 +185,6 @@ export const WeatherAppContextProvider = (props) => {
         assignWeatherIcon: assignWeatherIcon,
         now: now,
         night: night,
-        setNight: setNight,
         tempIcon: tempIcon,
       }}
     >

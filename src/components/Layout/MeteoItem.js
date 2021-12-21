@@ -2,7 +2,7 @@ import React from 'react';
 // import ThermostatOutlinedIcon from '@mui/icons-material/ThermostatOutlined';
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 
-const Temperature = (props) => {
+const MeteoItem = (props) => {
   return (
     <Card
       variant='outlined'
@@ -43,4 +43,4 @@ const Temperature = (props) => {
   );
 };
 
-export default Temperature;
+export default MeteoItem;

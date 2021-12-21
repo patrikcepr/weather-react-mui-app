@@ -5,21 +5,27 @@ import { Card, CardContent, Typography } from '@mui/material';
 import WeatherAppContext from '../../store/weatherAppContext';
 
 // import letnaEarlySummer from './assets/img/letna_EarlySummer.jpg';
-import letnaWinterNoSnow from '../../assets/img/letnaWinterNoSnow.jpg';
+import letnaWinterNoSnowDay from '../../assets/img/letnaWinterNoSnow.jpg';
+import letnaWinterNoSnowNight from '../../assets/img/letnaWinterNoSnowNight.jpg';
 
 const MeteoMain = (props) => {
   const ctx = useContext(WeatherAppContext);
 
   // get weather type to choose the icon
-  let weather = ctx.currentDayMainWeather;
+  const weather = ctx.currentDayMainWeather;
 
   // set the right icon
-  let iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
+  const iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
 
   // gradient over background photo dependent on time (and weather later)
-  let photoOverlay = ctx.night
+  const photoOverlay = ctx.night
     ? `linear-gradient(215deg, #0F2027dd, #203A43cc)`
     : `linear-gradient(35deg, #2C536488, #203A4377)`;
+
+  // set background picture
+  const backgroundPicture = ctx.night
+    ? letnaWinterNoSnowNight
+    : letnaWinterNoSnowDay;
 
   return (
     <Card
@@ -30,7 +36,7 @@ const MeteoMain = (props) => {
         alignItems: 'center',
         justifyItems: 'center',
         justifyContent: 'space-evenly',
-        background: `${photoOverlay}, url(${letnaWinterNoSnow})`,
+        background: `${photoOverlay}, url(${backgroundPicture})`,
         backgroundColor: 'primary.dark',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
