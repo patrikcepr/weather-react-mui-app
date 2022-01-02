@@ -138,7 +138,7 @@ export const WeatherAppContextProvider = (props) => {
         // comment out for real life
         // const data = data_obj_today;
         // comment out for real life
-        // console.log('FETCHing');
+        // console.log('FETCHing Dummy');
         await setData(() => data);
         //set current day object
         setCurrentDay(() => data.current);
