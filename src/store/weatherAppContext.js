@@ -27,7 +27,7 @@ import tempHotIco from '../assets/svg/temp_hot.svg';
 
 const WeatherAppContext = createContext({
   currentDay: {},
-  currentDayMainWeather: '',
+  currentDayWeather: '',
   timezone: '',
   getForecast: () => {},
   isLoading: Boolean,
@@ -35,7 +35,6 @@ const WeatherAppContext = createContext({
   toTime: () => {},
   toDateTime: () => {},
   data: {},
-  setData: () => {},
   assignWeatherIcon: () => {},
   now: Number,
   night: Boolean,
@@ -51,15 +50,40 @@ export const WeatherAppContextProvider = (props) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [timezone, setTimezone] = useState('');
-  const [currentDayMainWeather, setCurrentDayMainWeather] = useState('');
   const [data, setData] = useState({});
+  const [timezone, setTimezone] = useState('');
+  const [currentDayWeather, setCurrentDayWeather] = useState('');
+  const [tomorrow, setTomorrow] = useState({
+    temp: 2,
+    wind_speed: 5.3,
+    humidity: 88,
+    weather: [{ main: 'Snow' }],
+  });
+  // const [tomorrowWeather, setTomorrowWeather] = useState('');
+  const [day2, setDay2] = useState({
+    temp: 2,
+    wind_speed: 5.3,
+    humidity: 88,
+    weather: [{ main: 'Snow' }],
+  });
+  // const [day2Weather, setDay2Weather] = useState('');
+  const [day3, setDay3] = useState({
+    temp: 2,
+    wind_speed: 5.3,
+    humidity: 88,
+    weather: [{ main: 'Snow' }],
+  });
+  // const [day3Weather, setDay3Weather] = useState('');
   const [now, setNow] = useState(null);
   const [night, setNight] = useState(null);
 
   //date from UTC time stamp
   const toTime = (val) => new Date(val * 1000).toLocaleTimeString('cs-CZ');
   const toDateTime = (val) => new Date(val * 1000).toLocaleString('cs-CZ');
+  const toWeekDay = (val) =>
+    new Date(val * 1000)
+      .toLocaleString('un-US', { weekday: 'short' })
+      .toUpperCase();
 
   // assign the proper weather icon
   const assignWeatherIcon = (weather, night) => {
@@ -117,10 +141,10 @@ export const WeatherAppContextProvider = (props) => {
       now < sunrise || // midnight to sunrise -> night
       now > sunset // dark after today sunset -> night
     ) {
-      console.log("it's night");
+      // console.log("it's night");
       return true;
     } else {
-      console.log("it's day");
+      // console.log("it's day");
       return false;
     }
   };
@@ -139,14 +163,21 @@ export const WeatherAppContextProvider = (props) => {
         // const data = data_obj_today;
         // comment out for real life
         // console.log('FETCHing Dummy');
-        await setData(() => data);
-        //set current day object
+        setData(() => data);
+        //get current day object
         setCurrentDay(() => data.current);
-        // set timezone (location)
+        // get timezone (location)
         setTimezone(() => data.timezone);
-        setCurrentDayMainWeather(() => data.current.weather[0].main);
-        // set time
+        // get weather for icon
+        setCurrentDayWeather(() => data.current.weather[0].main);
+        // get time
         setNow(data.current.dt);
+        // get tomorrow
+        setTomorrow(data.daily[1]);
+        // get day2
+        setDay2(data.daily[2]);
+        // get day3
+        setDay3(data.daily[3]);
         // set day or night
         setNight(
           isNight(data.current.dt, data.current.sunrise, data.current.sunset)
@@ -173,19 +204,22 @@ export const WeatherAppContextProvider = (props) => {
     <WeatherAppContext.Provider
       value={{
         currentDay: currentDay,
-        currentDayMainWeather: currentDayMainWeather,
+        currentDayWeather: currentDayWeather,
         timezone: timezone,
         getForecast: getForecastHandler,
         isLoading: isLoading,
         error: error,
         toTime: toTime,
         toDateTime: toDateTime,
+        toWeekDay: toWeekDay,
         data: data,
-        setData: setData,
         assignWeatherIcon: assignWeatherIcon,
         now: now,
         night: night,
         tempIcon: tempIcon,
+        tomorrow: tomorrow,
+        day2: day2,
+        day3: day3,
       }}
     >
       {props.children}

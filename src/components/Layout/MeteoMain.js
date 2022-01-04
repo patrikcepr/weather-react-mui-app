@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { Card, CardContent, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import WeatherAppContext from '../../store/weatherAppContext';
 
@@ -12,7 +12,7 @@ const MeteoMain = (props) => {
   const ctx = useContext(WeatherAppContext);
 
   // get weather type to choose the icon
-  const weather = ctx.currentDayMainWeather;
+  const weather = ctx.currentDayWeather;
 
   // set the right icon
   const iconSrc = ctx.assignWeatherIcon(weather, ctx.night);
@@ -28,14 +28,13 @@ const MeteoMain = (props) => {
     : letnaWinterNoSnowDay;
 
   return (
-    <Card
+    <Grid
+      container
       sx={{
-        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyItems: 'center',
-        justifyContent: 'space-evenly',
+        color: 'white',
         background: `${photoOverlay}, url(${backgroundPicture})`,
         backgroundColor: 'primary.dark',
         backgroundPosition: 'center',
@@ -43,25 +42,17 @@ const MeteoMain = (props) => {
         backgroundSize: 'cover',
       }}
     >
-      <CardContent
-        sx={{
-          height: '100%',
-          color: 'white',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyItems: 'center',
-          justifyContent: 'space-evenly',
-        }}
-      >
+      <Grid item>
         <Typography
           variant='h3'
           textAlign='center'
-          paddingBottom={1}
+          padding={4}
           sx={{ filter: 'drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))' }}
         >
           {props.content}
         </Typography>
+      </Grid>
+      <Grid item>
         <img
           src={iconSrc}
           alt={weather}
@@ -70,16 +61,19 @@ const MeteoMain = (props) => {
             filter: 'drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))',
           }}
         />
+      </Grid>
+      <Grid item>
         <Typography
           variant='h5'
           textAlign='center'
-          paddingTop={1}
+          padding={6}
+          // paddingBottom={4}
           sx={{ filter: 'drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))' }}
         >
           {ctx.currentDay.weather[0].description}
         </Typography>
-      </CardContent>
-    </Card>
+      </Grid>
+    </Grid>
   );
 };
 

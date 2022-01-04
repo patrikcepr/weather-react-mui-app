@@ -25,14 +25,14 @@ const MeteoFooter = () => {
     <Grid container item>
       <Grid item xs={4}>
         <MeteoItem value={temperature} unit='°C' name='Temperature'>
-          <Box sx={{ height: '30px' }}>
+          <Box sx={{ height: { xs: '22px', sm: '30px' } }}>
             <img src={tempIco} alt='Temperature' style={{ height: '100%' }} />
           </Box>
         </MeteoItem>
       </Grid>
       <Grid item xs={4}>
         <MeteoItem value={windSpeed} unit='m/s' name='Wind'>
-          <Box sx={{ height: '30px' }}>
+          <Box sx={{ height: { xs: '22px', sm: '30px' } }}>
             <img
               src={windSpeedIco}
               alt='Wind Speed'
@@ -43,7 +43,7 @@ const MeteoFooter = () => {
       </Grid>
       <Grid item xs={4}>
         <MeteoItem value={humidity} unit='%' name='Humidity'>
-          <Box sx={{ height: '30px' }}>
+          <Box sx={{ height: { xs: '22px', sm: '30px' } }}>
             <img src={humidityIco} alt='Humidity' style={{ height: '100%' }} />
           </Box>
         </MeteoItem>
