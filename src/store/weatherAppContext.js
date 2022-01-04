@@ -1,10 +1,10 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
 // uncomment for real life
-import { apiKey } from '../apiConfig';
+// import { apiKey } from '../apiConfig';
 
 // comment out for real life
-// import data_obj_today from '../assets/data-obj-tonight.json';
+import data_obj_today from '../assets/data-obj-tonight.json';
 
 // weather icons
 import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
@@ -41,39 +41,23 @@ const WeatherAppContext = createContext({
   tempIcon: () => {},
 });
 
+const defaultDay = {
+  temp: 2,
+  wind_speed: 5.3,
+  humidity: 88,
+  weather: [{ main: 'Snow' }],
+};
+
 export const WeatherAppContextProvider = (props) => {
-  const [currentDay, setCurrentDay] = useState({
-    temp: 2,
-    wind_speed: 5.3,
-    humidity: 88,
-    weather: [{ main: 'Snow' }],
-  });
+  const [currentDay, setCurrentDay] = useState(defaultDay);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState({});
   const [timezone, setTimezone] = useState('');
   const [currentDayWeather, setCurrentDayWeather] = useState('');
-  const [tomorrow, setTomorrow] = useState({
-    temp: 2,
-    wind_speed: 5.3,
-    humidity: 88,
-    weather: [{ main: 'Snow' }],
-  });
-  // const [tomorrowWeather, setTomorrowWeather] = useState('');
-  const [day2, setDay2] = useState({
-    temp: 2,
-    wind_speed: 5.3,
-    humidity: 88,
-    weather: [{ main: 'Snow' }],
-  });
-  // const [day2Weather, setDay2Weather] = useState('');
-  const [day3, setDay3] = useState({
-    temp: 2,
-    wind_speed: 5.3,
-    humidity: 88,
-    weather: [{ main: 'Snow' }],
-  });
-  // const [day3Weather, setDay3Weather] = useState('');
+  const [tomorrow, setTomorrow] = useState(defaultDay);
+  const [day2, setDay2] = useState(defaultDay);
+  const [day3, setDay3] = useState(defaultDay);
   const [now, setNow] = useState(null);
   const [night, setNight] = useState(null);
 
@@ -127,14 +111,14 @@ export const WeatherAppContextProvider = (props) => {
   };
 
   // uncomment for real life
-  const place = {
-    name: 'Letná',
-    lat: 50.096034,
-    lon: 14.425966,
-  };
+  // const place = {
+  //   name: 'Letná',
+  //   lat: 50.096034,
+  //   lon: 14.425966,
+  // };
 
   // uncomment for real life
-  const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+  // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
 
   const isNight = (now, sunrise, sunset) => {
     if (
@@ -156,13 +140,13 @@ export const WeatherAppContextProvider = (props) => {
 
       try {
         // uncomment for real life
-        const response = await fetch(url);
+        // const response = await fetch(url);
         // uncomment for real life
-        const data = await response.json();
+        // const data = await response.json();
         // comment out for real life
-        // const data = data_obj_today;
+        const data = data_obj_today;
         // comment out for real life
-        // console.log('FETCHing Dummy');
+        console.log('FETCHing Dummy');
         setData(() => data);
         //get current day object
         setCurrentDay(() => data.current);
@@ -191,7 +175,7 @@ export const WeatherAppContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       // uncomment for real life
-      url,
+      // url,
     ]
   );
 
