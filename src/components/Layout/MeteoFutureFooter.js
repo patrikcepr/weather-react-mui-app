@@ -8,10 +8,15 @@ import { Grid } from '@mui/material';
 const MeteoFutureFooter = () => {
   const ctx = useContext(WeatherAppContext);
 
+  //Future days
+  const tomorrow = ctx.data.daily[1];
+  const day2 = ctx.data.daily[2];
+  const day3 = ctx.data.daily[3];
+
   // get weather type to choose the icon
-  const weatherTomorrow = ctx.tomorrow.weather[0].main;
-  const weatherDay2 = ctx.day2.weather[0].main;
-  const weatherDay3 = ctx.day3.weather[0].main;
+  const weatherTomorrow = tomorrow.weather[0].main;
+  const weatherDay2 = day2.weather[0].main;
+  const weatherDay3 = day3.weather[0].main;
 
   // set the right icon
   const iconSrc1 = ctx.assignWeatherIcon(weatherTomorrow);
@@ -29,8 +34,8 @@ const MeteoFutureFooter = () => {
             justifyContent: 'space-around',
           }}
         >
-          <Grid item>{ctx.toWeekDay(ctx.tomorrow.dt)}</Grid>
-          <Grid item>{Math.round(ctx.tomorrow.temp.day)} °C</Grid>
+          <Grid item>{ctx.toWeekDay(tomorrow.dt)}</Grid>
+          <Grid item>{Math.round(tomorrow.temp.day)} °C</Grid>
         </Grid>
         <img
           src={iconSrc1}
@@ -50,8 +55,8 @@ const MeteoFutureFooter = () => {
             justifyContent: 'space-around',
           }}
         >
-          <Grid item>{ctx.toWeekDay(ctx.day2.dt)}</Grid>
-          <Grid item>{Math.round(ctx.day2.temp.day)} °C</Grid>
+          <Grid item>{ctx.toWeekDay(day2.dt)}</Grid>
+          <Grid item>{Math.round(day2.temp.day)} °C</Grid>
         </Grid>
         <img
           src={iconSrc2}
@@ -71,8 +76,8 @@ const MeteoFutureFooter = () => {
             justifyContent: 'space-around',
           }}
         >
-          <Grid item>{ctx.toWeekDay(ctx.day3.dt)}</Grid>
-          <Grid item>{Math.round(ctx.day3.temp.day)} °C</Grid>
+          <Grid item>{ctx.toWeekDay(day3.dt)}</Grid>
+          <Grid item>{Math.round(day3.temp.day)} °C</Grid>
         </Grid>
         <img
           src={iconSrc3}

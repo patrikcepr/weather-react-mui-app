@@ -51,7 +51,7 @@ function App() {
                   backgroundColor: 'primary.dark',
                 }}
               >
-                {/* title={ctx.timezone} */}
+                {/* title={ctx.data.timezone} */}
                 Weather on Letná
               </Typography>
             </Grid>

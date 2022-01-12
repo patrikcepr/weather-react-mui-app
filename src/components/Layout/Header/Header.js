@@ -27,18 +27,6 @@ const Header = () => {
           icon={<CloudDownloadOutlinedIcon />}
         />
       </BottomNavigation>
-      {/* <Box
-          sx={{
-            display: 'flex',
-            gap: '8px',
-            justifyContent: 'center',
-            backgroundColor: 'primary.dark',
-            padding: '16px',
-          }}
-        >
-          <CloudDownloadOutlinedIcon />
-          <Typography variant='inherit'>Reload forecast</Typography>
-        </Box> */}
     </Fragment>
   );
 };
