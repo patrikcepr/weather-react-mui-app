@@ -1,29 +1,29 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useState, useCallback, useEffect } from "react";
 
 // comment out for real life
-import data_obj_today from '../assets/data-obj-tonight.json';
+import data_obj_today from "../assets/data-obj-tonight.json";
 
 // uncomment for real life
-import { apiKey } from '../apiConfig';
+import { apiKey } from "../apiConfig";
 
 // weather icons
-import brokenCloudsImg from '../assets/svg/broken_clouds.svg';
-import clearDayImg from '../assets/svg/clear_sky.svg';
-import clearNightImg from '../assets/svg/clear_skyN.svg';
-import cloudsDayImg from '../assets/svg/few_clouds.svg';
-import cloudsNightImg from '../assets/svg/few_cloudsN.svg';
-import drizzleImg from '../assets/svg/drizzle.svg';
-import fogImg from '../assets/svg/fog.svg';
-import rainImg from '../assets/svg/rain.svg';
-import snowImg from '../assets/svg/snow.svg';
-import thunderstormImg from '../assets/svg/thunderstorm.svg';
+import brokenCloudsImg from "../assets/svg/broken_clouds.svg";
+import clearDayImg from "../assets/svg/clear_sky.svg";
+import clearNightImg from "../assets/svg/clear_skyN.svg";
+import cloudsDayImg from "../assets/svg/few_clouds.svg";
+import cloudsNightImg from "../assets/svg/few_cloudsN.svg";
+import drizzleImg from "../assets/svg/drizzle.svg";
+import fogImg from "../assets/svg/fog.svg";
+import rainImg from "../assets/svg/rain.svg";
+import snowImg from "../assets/svg/snow.svg";
+import thunderstormImg from "../assets/svg/thunderstorm.svg";
 
 // temperature icons
-import tempBelowIco from '../assets/svg/temp_minus.svg';
-import tempZeroIco from '../assets/svg/temp_zero.svg';
-import tempLowIco from '../assets/svg/temp_low.svg';
-import tempMidIco from '../assets/svg/temp_mid.svg';
-import tempHotIco from '../assets/svg/temp_hot.svg';
+import tempBelowIco from "../assets/svg/temp_minus.svg";
+import tempZeroIco from "../assets/svg/temp_zero.svg";
+import tempLowIco from "../assets/svg/temp_low.svg";
+import tempMidIco from "../assets/svg/temp_mid.svg";
+import tempHotIco from "../assets/svg/temp_hot.svg";
 
 const WeatherAppContext = createContext({
   data: {},
@@ -43,29 +43,29 @@ export const WeatherAppContextProvider = (props) => {
   const [data, setData] = useState(data_obj_today);
 
   //date from UTC time stamp
-  const toTime = (val) => new Date(val * 1000).toLocaleTimeString('cs-CZ');
-  const toDateTime = (val) => new Date(val * 1000).toLocaleString('cs-CZ');
+  const toTime = (val) => new Date(val * 1000).toLocaleTimeString("cs-CZ");
+  const toDateTime = (val) => new Date(val * 1000).toLocaleString("cs-CZ");
   const toWeekDay = (val) =>
     new Date(val * 1000)
-      .toLocaleString('un-US', { weekday: 'short' })
+      .toLocaleString("un-US", { weekday: "short" })
       .toUpperCase();
 
   // assign the proper weather icon
   const assignWeatherIcon = (weather, night) => {
     switch (weather) {
-      case 'Clear':
+      case "Clear":
         return night ? clearNightImg : clearDayImg;
-      case 'Clouds':
+      case "Clouds":
         return night ? cloudsNightImg : cloudsDayImg;
-      case 'Drizzle':
+      case "Drizzle":
         return drizzleImg;
-      case 'Fog':
+      case "Fog":
         return fogImg;
-      case 'Rain':
+      case "Rain":
         return rainImg;
-      case 'Snow':
+      case "Snow":
         return snowImg;
-      case 'Thunderstorm':
+      case "Thunderstorm":
         return thunderstormImg;
       default:
         return brokenCloudsImg;
@@ -93,7 +93,7 @@ export const WeatherAppContextProvider = (props) => {
 
   // uncomment for real life
   const place = {
-    name: 'Letná',
+    name: "Letná",
     lat: 50.096034,
     lon: 14.425966,
   };
@@ -128,16 +128,13 @@ export const WeatherAppContextProvider = (props) => {
         // console.log('FETCHing Dummy');
         setData(() => data);
       } catch (error) {
-        console.log('error', error);
+        console.log("error", error);
         setError(() => error.message);
       }
       setIsLoading(false);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      // uncomment for real life
-      // url,
-    ]
+    []
   );
 
   useEffect(() => {

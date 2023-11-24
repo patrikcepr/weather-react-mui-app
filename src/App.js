@@ -1,22 +1,26 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext } from "react";
+import WeatherAppContext from "./store/weatherAppContext";
+import useWindowDimensions from "./lib/useWindowDimensions";
 
-import MeteoFooter from './components/Layout/MeteoFooter';
-import MeteoMain from './components/Layout/MeteoMain';
-import Header from './components/Layout/Header/Header';
+import Header from "./components/Layout/Header/Header";
+import MeteoMain from "./components/Layout/MeteoMain";
+import MeteoFooter from "./components/Layout/MeteoFooter";
+import MeteoFutureFooter from "./components/Layout/MeteoFutureFooter";
 
-import { logEvent } from '@firebase/analytics';
-import { analytics } from './firebaseConfig';
+import { logEvent } from "@firebase/analytics";
+import { analytics } from "./firebaseConfig";
 
-import { CssBaseline, Container, Grid, Typography } from '@mui/material';
-
-import WeatherAppContext from './store/weatherAppContext';
-import MeteoFutureFooter from './components/Layout/MeteoFutureFooter';
+import { CssBaseline, Container, Grid, Typography } from "@mui/material";
 
 function App() {
   // google analytics
   logEvent(analytics);
 
   const ctx = useContext(WeatherAppContext);
+
+  // outside css, let's check
+  const windowDimensions = useWindowDimensions();
+  console.log(windowDimensions);
 
   let content = <span>Data is loading....</span>;
 
@@ -39,16 +43,16 @@ function App() {
         <Header />
       </nav>
       <main>
-        <Container maxWidth='xs' sx={{ paddingBlockEnd: '24px' }}>
+        <Container maxWidth="xs" sx={{ paddingBlockEnd: "24px" }}>
           <Grid container>
             <Grid item xs={12}>
               <Typography
-                variant='h4'
-                align='center'
+                variant="h4"
+                align="center"
                 padding={2}
                 sx={{
-                  color: 'white',
-                  backgroundColor: 'primary.dark',
+                  color: "white",
+                  backgroundColor: "primary.dark",
                 }}
               >
                 {/* title={ctx.data.timezone} */}
@@ -60,21 +64,21 @@ function App() {
               xs={12}
               padding={0.5}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: '#2980B9' /* fallback for old browsers */,
-                backgroundImage: 'linear-gradient(to right, #2193b0, #6dd5ed)',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "#2980B9" /* fallback for old browsers */,
+                backgroundImage: "linear-gradient(to right, #2193b0, #6dd5ed)",
               }}
             >
               <Typography
-                variant='subtitle1'
-                textAlign='center'
+                variant="subtitle1"
+                textAlign="center"
                 sx={{
-                  color: 'white',
+                  color: "white",
                 }}
               >
-                {'Local Date & Time: ' + ctx.toDateTime(ctx.currentDay.dt)}
+                {"Local Date & Time: " + ctx.toDateTime(ctx.currentDay.dt)}
               </Typography>
             </Grid>
             <Grid
@@ -82,18 +86,18 @@ function App() {
               xs={12}
               padding={0.5}
               sx={{
-                background: '#FF512F' /* fallback for old browsers */,
-                backgroundImage: 'linear-gradient(to right, #F09819, #FF512F)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
+                background: "#FF512F" /* fallback for old browsers */,
+                backgroundImage: "linear-gradient(to right, #F09819, #FF512F)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
               }}
             >
-              <Typography variant='subtitle1' textAlign='center'>
-                {'Sunrise: ' + ctx.toTime(ctx.currentDay.sunrise)}
+              <Typography variant="subtitle1" textAlign="center">
+                {"Sunrise: " + ctx.toTime(ctx.currentDay.sunrise)}
               </Typography>
-              <Typography variant='subtitle1' textAlign='center'>
-                {' Sunset: ' + ctx.toTime(ctx.currentDay.sunset)}
+              <Typography variant="subtitle1" textAlign="center">
+                {" Sunset: " + ctx.toTime(ctx.currentDay.sunset)}
               </Typography>
             </Grid>
             <Grid item xs={12}>
