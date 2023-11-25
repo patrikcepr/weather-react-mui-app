@@ -1,4 +1,12 @@
-import React, { createContext, useState, useCallback, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useCallback,
+  useEffect,
+  SVGAttributes,
+  FunctionComponent,
+  ReactNode,
+} from "react";
 
 // comment out for real life
 import data_obj_today from "../assets/data-obj-tonight.json";
@@ -25,33 +33,50 @@ import tempLowIco from "../assets/svg/temp_low.svg";
 import tempMidIco from "../assets/svg/temp_mid.svg";
 import tempHotIco from "../assets/svg/temp_hot.svg";
 
-const WeatherAppContext = createContext({
-  data: {},
-  getForecast: () => {},
-  isLoading: Boolean,
-  error: null,
-  toTime: () => {},
-  toDateTime: () => {},
-  assignWeatherIcon: () => {},
-  night: Boolean,
-  tempIcon: () => {},
-});
+interface IWeatherAppContext {
+  data: object;
+  currentDay: object;
+  currentDayWeather: string;
+  getForecast: () => void;
+  isLoading: boolean;
+  error: any;
+  toTime: (val: number) => string;
+  toDateTime: (val: number) => string;
+  toWeekDay: (val: number) => string;
+  assignWeatherIcon: (
+    weather: string,
+    night: boolean
+  ) => FunctionComponent<SVGAttributes<SVGElement>>;
+  night: boolean;
+  now: number;
+  tempIcon: (
+    temp: number
+  ) => FunctionComponent<SVGAttributes<SVGElement>> | undefined;
+}
 
-export const WeatherAppContextProvider = (props) => {
+const WeatherAppContext = createContext({} as IWeatherAppContext);
+
+export const WeatherAppContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(data_obj_today);
 
   //date from UTC time stamp
-  const toTime = (val) => new Date(val * 1000).toLocaleTimeString("cs-CZ");
-  const toDateTime = (val) => new Date(val * 1000).toLocaleString("cs-CZ");
-  const toWeekDay = (val) =>
+  const toTime = (val: number) =>
+    new Date(val * 1000).toLocaleTimeString("cs-CZ");
+  const toDateTime = (val: number) =>
+    new Date(val * 1000).toLocaleString("cs-CZ");
+  const toWeekDay = (val: number) =>
     new Date(val * 1000)
       .toLocaleString("un-US", { weekday: "short" })
       .toUpperCase();
 
   // assign the proper weather icon
-  const assignWeatherIcon = (weather, night) => {
+  const assignWeatherIcon = (weather: string, night: boolean) => {
     switch (weather) {
       case "Clear":
         return night ? clearNightImg : clearDayImg;
@@ -73,7 +98,7 @@ export const WeatherAppContextProvider = (props) => {
   };
 
   // choose temperature icon
-  const tempIcon = (temp) => {
+  const tempIcon = (temp: number) => {
     if (temp < 0) {
       return tempBelowIco;
     }
@@ -101,7 +126,7 @@ export const WeatherAppContextProvider = (props) => {
   // uncomment for real life
   const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${place.lat}&lon=${place.lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
 
-  const isNight = (now, sunrise, sunset) => {
+  const isNight = (now: number, sunrise: number, sunset: number) => {
     if (
       now < sunrise || // midnight to sunrise -> night
       now > sunset // dark after today sunset -> night
@@ -127,7 +152,7 @@ export const WeatherAppContextProvider = (props) => {
         // comment out for real life
         // console.log('FETCHing Dummy');
         setData(() => data);
-      } catch (error) {
+      } catch (error: any) {
         console.log("error", error);
         setError(() => error.message);
       }
@@ -151,20 +176,20 @@ export const WeatherAppContextProvider = (props) => {
         getForecast: getForecastHandler,
         isLoading: isLoading,
         error: error,
-        toTime: toTime,
-        toDateTime: toDateTime,
-        toWeekDay: toWeekDay,
-        assignWeatherIcon: assignWeatherIcon,
+        toTime,
+        toDateTime,
+        toWeekDay,
+        assignWeatherIcon,
         now: data.current.dt,
         night: isNight(
           data.current.dt,
           data.current.sunrise,
           data.current.sunset
         ),
-        tempIcon: tempIcon,
+        tempIcon,
       }}
     >
-      {props.children}
+      {children}
     </WeatherAppContext.Provider>
   );
 };
