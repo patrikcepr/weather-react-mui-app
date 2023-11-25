@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import WeatherAppContext from "./store/weatherAppContext";
-import useWindowDimensions from "./lib/useWindowDimensions";
+import { useWindowDimensions } from "./lib/useWindowDimensions";
 
 import Header from "./components/Layout/Header/Header";
 import MeteoMain from "./components/Layout/MeteoMain";
